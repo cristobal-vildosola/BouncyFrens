@@ -3,7 +3,7 @@ import os
 import pygame
 
 from Blocks import Block, Platform
-from CharactersBase import GravityChar, CustomGroup
+from Characters import GravityChar, CustomGroup
 from Text import Text
 
 # centrar ventana
@@ -22,18 +22,17 @@ def main():
     # personajes
     char_size = 50
 
-    player1 = GravityChar(char_size, char_size, 150, 100, img='img/Pina.png', jumpspeed=8)
-    player2 = GravityChar(char_size, char_size, 450, 600, img='img/Tomimi.png', jumpspeed=8)
+    player1 = GravityChar(char_size, char_size, 150, 100, img='img/Pina.png', jumpspeed=8, g=0.5)
+    player2 = GravityChar(char_size, char_size, 450, 600, img='img/Tomimi.png', jumpspeed=8, g=0.5)
 
     chars = CustomGroup([player1, player2])
 
     # bloques
     blocks = CustomGroup()
-    border_color = (40, 20, 0)
 
-    blocks.add(Block(30, screen_height, -30, 0, color=border_color))  # izquierda
-    blocks.add(Block(30, screen_height, screen_width, 0, color=border_color))  # derecha
-    blocks.add(Block(screen_width, 30, 0, screen_height, color=border_color))  # abajo
+    blocks.add(Block(30, screen_height * 2, -30, -screen_height))  # izquierda
+    blocks.add(Block(30, screen_height * 2, screen_width, -screen_height))  # derecha
+    blocks.add(Block(screen_width, 30, 0, screen_height))  # abajo
 
     block1 = Block(30, screen_height, screen_width / 2, 0)  # bloque invisible en la mitad para player1
     block2 = Block(30, screen_height, screen_width / 2 - 30, 0)  # bloque invisible en la mitad para player2
@@ -67,8 +66,8 @@ def main():
                     player1.jump()
                     jump = True
                 if event.key == pygame.K_w:
-                    player2.jump()
-                    jump = True
+                    player2.jump(23)
+                    jump = False
 
         # teclas apretadas
         pressed = pygame.key.get_pressed()

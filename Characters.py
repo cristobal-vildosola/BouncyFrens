@@ -109,13 +109,19 @@ class GravityChar(Char):
         self.standing = False
 
     def update(self):
+        if self.vy == 0 and self.standing:
+            self.vy = 1 - self.g
+
         self.vy += self.g
         self.move(0, self.vy)
         self.standing = False
 
-    def jump(self):
+    def jump(self, jumpspeed=None):
         if self.standing:
-            self.vy = -self.jumpspeed
+            if jumpspeed is None:
+                self.vy = -self.jumpspeed
+            else:
+                self.vy = -jumpspeed
             self.standing = False
         return
 
