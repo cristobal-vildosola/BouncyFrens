@@ -1,6 +1,6 @@
 class Utils:
     @staticmethod
-    def get_bone_height(horizontal_position, left_player, old):
+    def get_bone_height(horizontal_position, old):
         if horizontal_position > Constants.bone_rect_width / 2:
             horizontal_position = Constants.bone_rect_width - horizontal_position
         base = Constants.bone_rect_height - horizontal_position * (Constants.bone_rect_height / 2) / (Constants.bone_rect_width / 2)
