@@ -17,13 +17,13 @@ def main():
 
     screen_width, screen_height = 600, 700
     screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("tutorial FrenCoins")
+    pygame.display.set_caption("Bouncy Frens")
 
     # personajes
     char_size = 50
 
-    player1 = GravityChar(char_size, char_size, 150, 100, img='img/Pina.png', jumpspeed=18)
-    player2 = GravityChar(char_size, char_size, 450, 600, img='img/Tomimi.png', jumpspeed=18)
+    player1 = GravityChar(char_size, char_size, 150, 100, img='img/Pina.png', jumpspeed=8)
+    player2 = GravityChar(char_size, char_size, 450, 600, img='img/Tomimi.png', jumpspeed=8)
 
     chars = CustomGroup([player1, player2])
 
@@ -35,28 +35,24 @@ def main():
     blocks.add(Block(30, screen_height, screen_width, 0, color=border_color))  # derecha
     blocks.add(Block(screen_width, 30, 0, screen_height, color=border_color))  # abajo
 
+    block1 = Block(30, screen_height, screen_width / 2, 0)  # bloque invisible en la mitad para player1
+    block2 = Block(30, screen_height, screen_width / 2 - 30, 0)  # bloque invisible en la mitad para player2
+
     # plataformas
     platform_color = (100, 50, 0)
 
-    plat1 = Platform(200, 5,
-                     0, 150,
+    plat1 = Platform(300, 5, 0, 650,
                      color=platform_color)
-    plat2 = Platform(200, 5,
-                     400, 150,
+    plat2 = Platform(300, 5, 300, 650,
                      color=platform_color)
-    plat3 = Platform(300, 5,
-                     0, 650,
+    plat3 = Platform(200, 5, 0, 150,
                      color=platform_color)
-    plat4 = Platform(300, 5,
-                     300, 650,
+    plat4 = Platform(200, 5, 400, 150,
                      color=platform_color)
 
-    platforms = CustomGroup(plat1, plat2, plat3, plat4)
-
-    indicacion = Text("Jugador 1 usa flechas para moverse, jugador 2 usa zsc",
-                      screen_width / 2, 17, center=True, color=(200, 200, 200))
-    indicacion2 = Text("(de esta manera no se bloquea el input en mi teclado)",
-                       screen_width / 2, 37, center=True, color=(200, 200, 200), height=20)
+    bottom_platforms = CustomGroup(plat1, plat2)
+    top_platforms = CustomGroup(plat3, plat4)
+    jump = False
 
     running = True
     while running:
@@ -69,8 +65,10 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     player1.jump()
+                    jump = True
                 if event.key == pygame.K_w:
                     player2.jump()
+                    jump = True
 
         # teclas apretadas
         pressed = pygame.key.get_pressed()
@@ -89,7 +87,12 @@ def main():
 
         # colisiones
         chars.detect_collisions(blocks)
-        chars.detect_collisions(platforms)
+        chars.detect_collisions(bottom_platforms)
+        if not jump:
+            chars.detect_collisions(top_platforms)
+
+        player1.detect_collisions([block1])
+        player2.detect_collisions([block2])
 
         # para asegurarse de que no hayan problemas con las colisiones entre objetos que se mueven,
         # hay que detectar las colisiones n veces (debido a que al resolver una colisión pueden
@@ -100,9 +103,8 @@ def main():
         # dibujar
         screen.fill((25, 115, 200))  # rellenar fondo
         blocks.draw(screen)
-        platforms.draw(screen)
-        indicacion.draw(screen)
-        indicacion2.draw(screen)
+        bottom_platforms.draw(screen)
+        top_platforms.draw(screen)
         chars.draw(screen)
 
         # actualizar y esperar un tick
