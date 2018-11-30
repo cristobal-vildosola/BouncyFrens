@@ -15,57 +15,43 @@ def main():
     clock = pygame.time.Clock()
     fps = 60
 
-    screen_width, screen_height = 800, 600
+    screen_width, screen_height = 600, 700
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("tutorial FrenCoins")
 
     # personajes
     char_size = 50
 
-    # GravityChar(ancho, alto, pos_x, pos_y)
-    player1 = GravityChar(char_size, char_size, 600, 200, img='img/Pina.png', jumpspeed=18)
-    player2 = GravityChar(char_size, char_size, 300, 200, img='img/Tomimi.png', jumpspeed=18)
+    player1 = GravityChar(char_size, char_size, 150, 100, img='img/Pina.png', jumpspeed=18)
+    player2 = GravityChar(char_size, char_size, 450, 600, img='img/Tomimi.png', jumpspeed=18)
 
     chars = CustomGroup([player1, player2])
 
     # bloques
     blocks = CustomGroup()
-    border_width = 30
     border_color = (40, 20, 0)
 
-    # Block(ancho, alto, pos_x, pos_y, color)
-    blocks.add(Block(border_width, screen_height, 0, 0, color=border_color))
-    blocks.add(Block(screen_width, border_width, 0, 0, color=border_color))
-    blocks.add(Block(border_width, screen_height, screen_width - border_width, 0, color=border_color))
-    blocks.add(Block(screen_width, border_width, 0, screen_height - border_width, color=border_color))
+    blocks.add(Block(30, screen_height, -30, 0, color=border_color))  # izquierda
+    blocks.add(Block(30, screen_height, screen_width, 0, color=border_color))  # derecha
+    blocks.add(Block(screen_width, 30, 0, screen_height, color=border_color))  # abajo
 
     # plataformas
-    platform_height = 5
-    platform_width = 200
     platform_color = (100, 50, 0)
 
-    # 1/4 del ancho y del alto
-    height_part = (screen_height - 2 * border_width) / 4
-    width_part = (screen_width - 2 * border_width) / 4
-
-    # Platform(ancho, alto, pos_x, pos_y)
-    plat1 = Platform(platform_width, platform_height,
-                     width_part * 2 + border_width - platform_width / 2, height_part * 2 + border_width,
+    plat1 = Platform(200, 5,
+                     0, 150,
                      color=platform_color)
-    plat2 = Platform(platform_width, platform_height,
-                     width_part + border_width - platform_width / 2, height_part * 3 + border_width,
+    plat2 = Platform(200, 5,
+                     400, 150,
                      color=platform_color)
-    plat3 = Platform(platform_width, platform_height,
-                     width_part * 3 + border_width - platform_width / 2, height_part * 3 + border_width,
+    plat3 = Platform(300, 5,
+                     0, 650,
                      color=platform_color)
-    plat4 = Platform(platform_width, platform_height,
-                     width_part + border_width - platform_width / 2, height_part + border_width,
-                     color=platform_color)
-    plat5 = Platform(platform_width, platform_height,
-                     width_part * 3 + border_width - platform_width / 2, height_part + border_width,
+    plat4 = Platform(300, 5,
+                     300, 650,
                      color=platform_color)
 
-    platforms = CustomGroup(plat1, plat2, plat3, plat4, plat5)
+    platforms = CustomGroup(plat1, plat2, plat3, plat4)
 
     indicacion = Text("Jugador 1 usa flechas para moverse, jugador 2 usa zsc",
                       screen_width / 2, 17, center=True, color=(200, 200, 200))
@@ -83,7 +69,7 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     player1.jump()
-                if event.key == pygame.K_s:
+                if event.key == pygame.K_w:
                     player2.jump()
 
         # teclas apretadas
@@ -93,9 +79,9 @@ def main():
         if pressed[pygame.K_RIGHT]:
             player1.move(dx=5)
 
-        if pressed[pygame.K_z]:
+        if pressed[pygame.K_a]:
             player2.move(dx=-5)
-        if pressed[pygame.K_c]:
+        if pressed[pygame.K_d]:
             player2.move(dx=5)
 
         # mov automático
