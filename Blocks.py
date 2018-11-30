@@ -66,3 +66,16 @@ class Platform(Block):
     # choque con el lado inferior, no hace nada
     def collide_bottom(self, moving_sprite):
         return False
+
+
+class SpriteBlock(Block):
+
+    def __init__(self, width, height, x, y, img):
+        Block.__init__(self, width, height, x, y)
+
+        # imagen a mostrar cada vez que se llama draw()
+        self.image = pygame.image.load(img)
+        self.image = pygame.transform.smoothscale(self.image, (width, height))
+
+        # posición
+        self.rect = self.image.get_rect().move(x, y)

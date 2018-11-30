@@ -2,7 +2,7 @@ import os
 
 import pygame
 
-from Blocks import Block, Platform
+from Blocks import Block, Platform, SpriteBlock
 from Characters import GravityChar, CustomGroup
 from Text import Text
 
@@ -23,7 +23,7 @@ def main():
     char_size = 50
 
     player1 = GravityChar(char_size, char_size, 150, 100, img='img/Pina.png', jumpspeed=8, g=0.5)
-    player2 = GravityChar(char_size, char_size, 450, 600, img='img/Tomimi.png', jumpspeed=8, g=0.5)
+    player2 = GravityChar(char_size, char_size, 450, 550, img='img/Tomimi.png', jumpspeed=8, g=0.5)
 
     chars = CustomGroup([player1, player2])
 
@@ -37,12 +37,14 @@ def main():
     block1 = Block(30, screen_height, screen_width / 2, 0)  # bloque invisible en la mitad para player1
     block2 = Block(30, screen_height, screen_width / 2 - 30, 0)  # bloque invisible en la mitad para player2
 
+    bone = SpriteBlock(600, 500, 0, 370, 'img/bone.png')
+
     # plataformas
     platform_color = (100, 50, 0)
 
-    plat1 = Platform(300, 5, 0, 650,
+    plat1 = Platform(300, 5, 0, 600,
                      color=platform_color)
-    plat2 = Platform(300, 5, 300, 650,
+    plat2 = Platform(300, 5, 300, 600,
                      color=platform_color)
     plat3 = Platform(200, 5, 0, 150,
                      color=platform_color)
@@ -66,7 +68,7 @@ def main():
                     player1.jump()
                     jump = True
                 if event.key == pygame.K_w:
-                    player2.jump(23)
+                    player2.jump(24)
                     jump = False
 
         # teclas apretadas
@@ -104,6 +106,9 @@ def main():
         blocks.draw(screen)
         bottom_platforms.draw(screen)
         top_platforms.draw(screen)
+
+        bone.draw(screen)
+
         chars.draw(screen)
 
         # actualizar y esperar un tick

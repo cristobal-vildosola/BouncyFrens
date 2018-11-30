@@ -17,7 +17,7 @@ class Char(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # imagen a mostrar cada vez que se llama draw()
-        self.image = pygame.image.load(img).convert_alpha()
+        self.image = pygame.image.load(img)
         self.image = pygame.transform.smoothscale(self.image, (width, height))
 
         # posición
